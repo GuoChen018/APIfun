@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+	<title>JSON Demo</title>
+	<meta charset="utf-8"/>
+	<script>
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+		function loadMessages() {
+			/* Step 1: Make instance of XHR object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			console.log("1: created request");
+ 
+		// Step 2: Open the JSON file at remote location
+ 
+			request.open("GET", "https://api.publicapis.org/entries", true);
+
+			console.log("2: open success");
+ 	
+			// Step 3: set up callback for when HTTP response is returned (i.e., you get the JSON file back)
+
+			request.onreadystatechange = function() {
+				console.log("3:  event fired");
+			
+ 
+				if (request.readyState == 4 && request.status == 200) {
+
+					// Step 5: when we get all the JSON data back, parse it and use it
+					console.log("5:  data is ready");
+					theData = request.responseText;
+					// returnHTML = theData;
+                    // console.log(returnHTML);
+					data = JSON.parse(theData);
+					
+                    returnHTML = "";
+					returnHTML += "<br>"+ 
+                    "<div class=\"box\">" + "#" + data["entries"][0].Category + "<br>" + "<span class=\"test\">" + data["entries"][0].API + "</span>" + "<br>" +
+                    data["entries"][0].Description + "<br><br>" + "<hr><br>" + 
+                    "<b>Auth: </b>" + data["entries"][0].Auth + "<br>" + 
+                    "<b>HTTPS: </b>" + data["entries"][0].HTTPS + "<br>" + 
+                    "<b>Cors: </b>" + data["entries"][0].Cors + "<br><br>" + "<hr><br>" +
+                    "<b>Copy this link: </b>" + data["entries"][0].Link + "<br>";
+
+					document.getElementById("messages").innerHTML =returnHTML;
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("display").innerHTML = "Whoops, something went terribly wrong!";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					console.log("6:  ready state 3- request received,data being sent");
+					document.getElementById("display").innerHTML = "Come back soon!";
+
+				}
+
+			}//end on readystate change
+	
+		// Step 4: fire off the HTTP request
+			request.send();
+			console.log("4 request sent");
+		}
+
+        function randomAPI() {
+            returnHTML = "";
+
+            i = getRandomInt(1374);
+
+            returnHTML += "<br>"+ 
+            "<div class=\"box\">" + "#" + data["entries"][i].Category + "<br>" + "<span class=\"test\">" + data["entries"][i].API + "</span>" + "<br>" +
+            data["entries"][i].Description + "<br><br>" + "<hr><br>" + 
+            "<b>Auth: </b>" + data["entries"][i].Auth + "<br>" + 
+            "<b>HTTPS: </b>" + data["entries"][i].HTTPS + "<br>" + 
+            "<b>Cors: </b>" + data["entries"][i].Cors + "<br><br>" + "<hr><br>" +
+            "<b>Copy this link: </b>" + data["entries"][i].Link + "<br>";
+
+            document.getElementById("messages").innerHTML =returnHTML;
+
+        }
+	</script>
+    <style>
+        * {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+         #display {
+            visibility: hidden;
+        }
+        h1 {
+            font-size: 40px;
+            display: block;
+            font-weight: 900;
+            text-align: center;
+            padding: 40px;
+            color: #fff;
+            background-color: #000;
+        }
+
+        h2 {
+            font-size: 28px;
+            width: 40%;
+            margin: 30px auto 12px auto;
+        }
+
+        #messages{
+            width: 40%;
+            margin: 30px auto;
+            font-size: 18px;
+        }
+
+        .test {
+            font-weight: 900;
+            font-size: 30px;
+        }
+
+        .box {
+            border: 1px solid;
+            padding: 30px;
+            box-shadow: 8px 10px;
+            margin-bottom: 48px;
+        }
+
+        .boxInside {
+            border: 1px solid;
+            padding: 30px;
+            margin-top: 24px;
+        }
+
+        .content {
+            width: 40%;
+            margin: 30px auto;
+        }
+
+        input[type=button] {
+            margin: 30px auto;
+            display: block;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+        p {
+            line-height: 150%;
+        }
+
+    </style>
+</head>
+
+
+<body onload="loadMessages()">
+
+	<h1>Random Public API Generator!</h1>
+
+    <p id="display"></p>
+	<div id="messages"></div>
+    <input type = "button" value = "🤪 Random!" onclick="randomAPI()"/>
+    <br> 
+    <h2>Web Content</h2>
+
+    <div class="content">
+        <div class="box">
+            <p>The API I chose is the Public API List. It holds 1374 APIs!</p>
+        </div>
+        <div class="box">
+            <a href="https://mixedanalytics.com/blog/list-actually-free-open-no-auth-needed-apis/" target="_blank">👉 Here's where I found this API!</a>
+        </div>
+        <div class="box">
+            <p>I've decided to create a random generator for the Public API! So I'm only displaying one API at a time. 
+                This prevents the generator from overwhelming the visitor. <br><br>
+                
+                I'm also displaying all the information about each generated API
+                to help the visitor make their decision easier. 
+            </p>
+        </div>
+        <div class="box">
+            Two applications I can think of is
+            <div class="boxInside">
+                1 - Any programmers who wants to use an API to help create their product 
+            </div>
+            <div class="boxInside">
+                2 - Any students who need to do an API assignment in class!
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+</html>
